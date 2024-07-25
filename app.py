@@ -6,7 +6,6 @@ import json
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
-# Configurations
 CLIENT_ID = '2fac091806a94209a92261288666ec3c'
 CLIENT_SECRET = '58f69499d8f8428cb77de824eb2bc9d2'
 REDIRECT_URI = 'http://localhost:8888/callback'
@@ -45,7 +44,6 @@ def callback():
     if not access_token:
         return "Error: No access token found in the response", 400
 
-    # Store tokens
     with open(TOKEN_FILE, 'w') as file:
         json.dump({
             'access_token': access_token,
@@ -81,7 +79,6 @@ def refresh_token():
     if not access_token:
         return "Error: No access token found in the response", 400
 
-    # Update tokens
     with open(TOKEN_FILE, 'w') as file:
         json.dump({
             'access_token': access_token,
