@@ -1,5 +1,3 @@
-# main.py
-
 from deezer import get_deezer_playlist
 from spotify import create_spotify_playlist, search_spotify_track, add_tracks_to_spotify_playlist
 from utils import format_track_query
