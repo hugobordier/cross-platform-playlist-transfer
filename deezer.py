@@ -1,5 +1,5 @@
 import requests  # type: ignore
-from config import DEEZER_PLAYLIST_ID, DEEZER_TOKEN
+from config import DEEZER_PLAYLIST_ID
 
 def get_deezer_playlist():
     """

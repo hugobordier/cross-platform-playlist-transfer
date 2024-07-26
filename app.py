@@ -6,6 +6,7 @@ import json
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
+# Spotify API credentials
 CLIENT_ID = '2fac091806a94209a92261288666ec3c'
 CLIENT_SECRET = '58f69499d8f8428cb77de824eb2bc9d2'
 REDIRECT_URI = 'http://localhost:8888/callback'
@@ -35,6 +36,7 @@ def callback():
     })
 
     if response.status_code != 200:
+        print(f"Error: {response.status_code} - {response.text}")
         return f"Error: {response.status_code} - {response.text}", response.status_code
 
     response_data = response.json()
@@ -42,13 +44,18 @@ def callback():
     refresh_token = response_data.get('refresh_token')
 
     if not access_token:
+        print("Error: No access token found in the response")
         return "Error: No access token found in the response", 400
 
+    # Save tokens to a file
     with open(TOKEN_FILE, 'w') as file:
         json.dump({
             'access_token': access_token,
             'refresh_token': refresh_token
         }, file)
+
+    print("Access Token:", access_token)
+    print("Refresh Token:", refresh_token)
 
     return jsonify({
         'access_token': access_token
@@ -57,7 +64,7 @@ def callback():
 @app.route('/refresh_token')
 def refresh_token():
     with open(TOKEN_FILE, 'r') as file:
-        tokens = json.load(file)
+        tokens = json.load(file)  # to load the tokens.json file
 
     refresh_token = tokens.get('refresh_token')
     if not refresh_token:
@@ -71,12 +78,14 @@ def refresh_token():
     })
 
     if response.status_code != 200:
+        print(f"Error: {response.status_code} - {response.text}")
         return f"Error: {response.status_code} - {response.text}", response.status_code
 
     response_data = response.json()
     access_token = response_data.get('access_token')
 
     if not access_token:
+        print("Error: No access token found in the response")
         return "Error: No access token found in the response", 400
 
     with open(TOKEN_FILE, 'w') as file:
