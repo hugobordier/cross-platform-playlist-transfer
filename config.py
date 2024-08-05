@@ -1,4 +1,4 @@
-DEEZER_PLAYLIST_ID = '11506870344'
+DEEZER_PLAYLIST_ID = '10963818362'
 SPOTIFY_USER_ID = 'benj283'
 
 # Les identifiants de l'application Spotify

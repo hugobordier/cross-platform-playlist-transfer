@@ -1,5 +1,6 @@
 import requests
 from config import TOKEN_FILE, SPOTIFY_USER_ID
+from utils import get_access_token
 
 def create_spotify_playlist(name, description):
     """
@@ -12,10 +13,13 @@ def create_spotify_playlist(name, description):
     Returns:
         str: The ID of the created playlist.
     """
-    
+    access_token = get_access_token(TOKEN_FILE)
+    if not access_token:
+        raise ValueError("No access token available")
+
     url = f'https://api.spotify.com/v1/users/{SPOTIFY_USER_ID}/playlists'
     headers = {
-        'Authorization': f'Bearer {SPOTIFY_TOKEN}',
+        'Authorization': f'Bearer {access_token}',
         'Content-Type': 'application/json'
     }
     data = {
@@ -37,9 +41,13 @@ def search_spotify_track(query):
     Returns:
         str: The Spotify track ID if found, else None.
     """
+    access_token = get_access_token(TOKEN_FILE)
+    if not access_token:
+        raise ValueError("No access token available")
+
     url = f'https://api.spotify.com/v1/search?q={query}&type=track'
     headers = {
-        'Authorization': f'Bearer {SPOTIFY_TOKEN}'
+        'Authorization': f'Bearer {access_token}'
     }
     response = requests.get(url, headers=headers)
     response.raise_for_status()
@@ -59,9 +67,13 @@ def add_tracks_to_spotify_playlist(playlist_id, track_ids):
     Returns:
         None
     """
+    access_token = get_access_token(TOKEN_FILE)
+    if not access_token:
+        raise ValueError("No access token available")
+
     url = f'https://api.spotify.com/v1/playlists/{playlist_id}/tracks'
     headers = {
-        'Authorization': f'Bearer {SPOTIFY_TOKEN}',
+        'Authorization': f'Bearer {access_token}',
         'Content-Type': 'application/json'
     }
     data = {
